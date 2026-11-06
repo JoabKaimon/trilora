@@ -1,44 +1,70 @@
-# Trilora — Protótipo de organização acadêmica
+# Trilora 1.1 — Organizador acadêmico
 
-Projeto inicial para a disciplina de Engenharia de Software.
+Projeto de Engenharia de Software, desenvolvido em HTML, CSS e JavaScript sem frameworks.
+
+## Novidades da versão 1.1
+
+- Código separado em HTML, CSS e módulos JavaScript.
+- Edição de tarefas existentes (título, disciplina, prazo e prioridade).
+- Busca textual de tarefas, filtro por situação e filtro por disciplina.
+- Validação de títulos e datas; prevenção de disciplinas duplicadas.
+- Testes automatizados para regras de negócio.
+- Compatibilidade com os dados da versão 1.0 armazenados no navegador.
+
+## Estrutura
+
+```text
+trilora/
+├── index.html                Página principal
+├── css/
+│   ├── style.css             Estilo da versão inicial
+│   └── improvements.css      Melhorias visuais
+├── js/
+│   ├── app.js                Interface e interações
+│   └── data.js               Dados e regras testáveis
+├── tests/
+│   └── data.test.mjs         Testes automatizados
+├── package.json              Configuração dos testes
+└── README.md
+```
 
 ## Como executar
 
-1. Extraia o arquivo ZIP.
-2. Abra `index.html` no navegador (Chrome, Edge ou Firefox).
-3. Teste o cadastro de disciplinas, a inclusão e conclusão de tarefas e o calendário.
+Como a aplicação agora utiliza módulos JavaScript (`type="module"`), rode-a por um servidor HTTP local em vez de abrir o arquivo pelo protocolo `file://`.
 
-Não é necessário instalar dependências, conectar à internet nem configurar banco de dados.
+No Visual Studio Code, você pode utilizar uma extensão de servidor local como Live Server. Se tiver Python 3 instalado, também pode executar na pasta do projeto:
 
-## Onde está o código?
+```bash
+python -m http.server 8000
+```
 
-Toda a primeira versão está em `index.html`:
+Depois, acesse `http://localhost:8000`.
 
-- **HTML**: estrutura da página (início e final do arquivo).
-- **CSS**: regras visuais entre `<style>` e `</style>`.
-- **JavaScript**: funcionalidades entre `<script>` e `</script>`.
+**O GitHub Pages não exige instalação de nada:** ele já disponibiliza os arquivos por HTTP/HTTPS.
 
-Abra o arquivo no Visual Studio Code para ler e modificar. É um protótipo funcional, ainda não uma arquitetura de produção. Na próxima etapa, recomenda-se separar HTML, CSS e JavaScript em arquivos, adicionar testes e um back-end.
+## Executar testes
 
-## Regras atuais
+Com Node.js instalado (sem dependências de terceiros):
 
-- Uma tarefa pertence a uma disciplina, tem título, prazo, prioridade e estado de conclusão.
-- Uma disciplina com tarefas relacionadas não pode ser excluída diretamente.
-- O progresso corresponde à proporção de tarefas concluídas.
-- O estado é persistido somente no navegador via `localStorage`, usando a chave `trilora-v1`.
-- O conjunto de demonstração é carregado no primeiro acesso.
+```bash
+npm test
+```
 
-## Limitações importantes
+Os testes cobrem progresso, filtragem, ordenação, validação, escape de HTML e compatibilidade do armazenamento local.
 
-- Não há login nem sincronização entre dispositivos.
-- Não há banco de dados remoto, API ou acesso multiusuário.
-- Os dados podem desaparecer se o armazenamento do navegador for apagado.
-- Não utilizar dados pessoais sensíveis nesta versão.
+## Publicar no GitHub Pages
 
-## Como publicar em hospedagem independente
+1. Antes de atualizar, guarde uma cópia do repositório atual.
+2. Extraia o ZIP da versão 1.1.
+3. No repositório `JoabKaimon/trilora`, atualize `index.html` e `README.md`, envie as pastas `css`, `js` e `tests` e o arquivo `package.json`.
+4. Confirme que `index.html` continua na raiz do branch `main`.
+5. Aguarde a publicação em `https://joabkaimon.github.io/trilora/`.
+6. Abra o site e teste a edição, a pesquisa e o calendário.
 
-**GitHub Pages:** crie um repositório público, envie `index.html` para a raiz, acesse Settings > Pages e selecione *Deploy from a branch* com a branch `main` e a pasta `/ (root)`. O endereço normalmente segue o padrão `usuario.github.io/nome-do-repositorio/`.
+**Não envie apenas o arquivo ZIP para a raiz do repositório.** O GitHub Pages precisa dos arquivos extraídos. Mantenha os caminhos e nomes das pastas.
 
-**Netlify:** envie a pasta contendo `index.html` pela opção de deploy manual. A hospedagem atribuirá um endereço `*.netlify.app`, personalizável conforme a disponibilidade.
+## Armazenamento e limitações
 
-Antes de tornar o repositório público, revise o código e remova qualquer informação privada. Este pacote não contém credenciais.
+O sistema usa a chave `trilora-v1` no `localStorage` e mantém os registros já existentes na mesma origem (endereço web) e navegador. Isso não sincroniza dados entre dispositivos. Se o usuário limpar os dados do site, os registros locais podem ser perdidos. Ainda não há autenticação, banco de dados remoto ou suporte a múltiplos usuários.
+
+O conjunto de demonstração aparece somente quando não existem dados salvos. Os testes automatizados não substituem os testes manuais no navegador.
